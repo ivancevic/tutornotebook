@@ -11,10 +11,22 @@ class DashboardController extends AbstractController
     /**
      * @Route("/dashboard", name="dashboard")
      */
-    public function index(): Response
+    public function dashboard(): Response
     {
-        return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
-        ]);
+        $hasAdminAccess = $this->isGranted('ROLE_ADMIN');
+        if($hasAdminAccess) {
+            return $this->render('dashboard/index.html.twig', [
+                'controller_name' => 'Admin Dashboard',
+            ]);
+        }
+        
+        
+        $hasUserAccess = $this->isGranted('ROLE_USER');
+        if($hasUserAccess) {
+            return $this->render('dashboard/index.html.twig', [
+                'controller_name' => 'User Dashboard',
+            ]);
+        }
     }
+
 }
