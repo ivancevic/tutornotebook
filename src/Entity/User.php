@@ -30,11 +30,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -44,6 +39,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
      */
     private $role;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fistname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telefon;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $status;
 
     public function __construct()
     {
@@ -88,16 +108,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
+    
     public function getRoles(): array
     {
         $userRoles = $this->getRole();
         // guarantee every user at least has ROLE_USER
+        
         foreach ($userRoles as $userRole) 
         {
             $roles[] = $userRole->getNameRole();    
         }
-        
-        return array_unique($roles);
+ 
+        return array_unique($roles);     
     }
 
     public function setRoles(array $roles): self
@@ -107,10 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -162,6 +181,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRole(Role $role): self
     {
         $this->role->removeElement($role);
+
+        return $this;
+    }
+    
+    public function __toString() {
+        return $this->email;
+    }
+
+    public function getFistname(): ?string
+    {
+        return $this->fistname;
+    }
+
+    public function setFistname(?string $fistname): self
+    {
+        $this->fistname = $fistname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getTelefon(): ?string
+    {
+        return $this->telefon;
+    }
+
+    public function setTelefon(?string $telefon): self
+    {
+        $this->telefon = $telefon;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
